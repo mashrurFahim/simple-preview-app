@@ -1,39 +1,30 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { PreviewContext } from './MainComponent'
 
 function LeftComponent(props) {
   const [preview, setPreview] = useContext(PreviewContext)
-  let [imageIndex, setImageIndex] = useState(0)
-  // console.log(state)
+  const newPreview = { ...preview }
+  const imageIndex = newPreview.currentImgIndex
   const numberOfImage = preview.image.length
 
-  let i = 0
-  // console.log(numberOfImage)
-  const handlePreviousClick = (e) => {
-    e.preventDefault()
-    if (i > 0) {
-      i = i - 1
-      console.log('after decrement i is ' + i)
+  const handlePreviousClick = () => {
+    if (imageIndex > 0) {
+      let newImageIndex = imageIndex - 1
+      newPreview.currentImgIndex = newImageIndex
     } else {
-      i = numberOfImage - 1
+      newPreview.currentImgIndex = numberOfImage - 1
     }
-    console.log('imgae index updated')
-    setImageIndex(i)
-    // setState(props.item.currentImgIndex)
-    console.log(imageIndex)
+    setPreview(newPreview)
   }
-  const handleNextClick = (e) => {
-    e.preventDefault()
-    if (i < numberOfImage - 1) {
-      i = i + 1
-      console.log('after increment i is ' + i)
+
+  const handleNextClick = () => {
+    if (imageIndex < numberOfImage - 1) {
+      let newImageIndex = imageIndex + 1
+      newPreview.currentImgIndex = newImageIndex
     } else {
-      i = 0
+      newPreview.currentImgIndex = 0
     }
-    console.log('imgae index updated')
-    setImageIndex(i)
-    // setState(props.item.currentImgIndex)
-    // console.log(imageIndex)
+    setPreview(newPreview)
   }
 
   const renderButton = () => {
@@ -86,7 +77,7 @@ function LeftComponent(props) {
           <span className='inline-block h-2 w-2 rounded-full bg-gray-400 mr-2'></span>
         </div>
         <div className='rounded-lg shadow-lg h-96 overflow-auto scrollbar-hide'>
-          <img src={preview.image[imageIndex]} alt='' />
+          <img src={preview.image[preview.currentImgIndex]} alt='' />
         </div>
       </div>
       <div className='flex justify-center m-4'>{renderButton()}</div>
